@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseNow</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #00A86B;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .header-content {
+            position: relative;
+        }
+
+        .username {
+            color: #fff;
+            position: absolute;
+            bottom: -8px;
+            right: 0px;
+        }
+
+        nav {
+            background-color: #00a86ad7;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        section {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .box {
+            background-color: #ffffff;
+            padding: 10px;
+            margin: 0 auto;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            color: rgba(0, 0, 0, 0.75);
+            width: 30%;
+            box-sizing: border-box;
+            height: 80vh;
+        }
+
+        .case {
+            border: 1px solid #dddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            text-align: left;
+            position: relative;
+        }
+        
+        .case .open-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        footer {
+            background-color: #00A86B;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .baldy {
+            text-align: left;
+            position: relative;
+            left: 2%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>CaseNow</h1>
+            {% if 'username' in session %}
+                <span class="username">User: {{ session['username'] }}</span>
+            {% endif %}
+        </div>
+    </header>
+
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/mycases">My Cases</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <section>
+        <div class="box">
+            <h2>Profile</h2>
+            <div class="baldy">
+                <strong>Username:</strong>
+                <label>{{ user[0] }}</label><br><br>
+                <strong>Role:</strong>
+                <label>{{ user[2] }}</label><br><br>
+                <strong>Account Created:</strong>
+                <label>{{ user[3] }}</label><br><br><br>
+
+                {% if session.user_role in ['admin'] %}
+                    <strong>Admin Statistics</strong><br><br>
+                    <label>WIP</label>
+
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2024 CaseNow v0.8
+    </footer>
+
+</body>
+</html>

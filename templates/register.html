@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseNow: Login</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 95%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #188330;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #136425;
+        }
+        
+        .container {
+            color: #13642588;
+            font-size: 30px;
+        }
+
+        .login {
+            position: relative;
+            left: 55%;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CaseNow</h1>
+    </div>
+    <strong>v0.8</strong><br>
+    <form method="POST" action="/register">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="error-message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <h1>Register</h1>
+        <label for="username">Username:</label>
+        <input type="text" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+        <label for="password_confirm">Confirm Password:</label>
+        <input type="password" name="password_confirm" required>
+        <label for="role_key">Role Key:</label>
+        <input type="text" name="role_key">
+        <button type="submit" onclick="showError()">Register</button>
+        <a href="/" class="login">Login</a>
+    </form>
+
+    <script>
+        function showError() {
+            document.getElementById("error-message").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
+

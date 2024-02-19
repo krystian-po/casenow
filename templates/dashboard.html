@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseNow</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #00A86B;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .header-content {
+            position: relative;
+        }
+
+        .username {
+            color: #fff;
+            position: absolute;
+            bottom: -8px;
+            right: 0px;
+        }
+
+        nav {
+            background-color: #00a86ad7;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        section {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .box {
+            background-color: #ffffff;
+            padding: 10px;
+            margin: 0 auto;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            color: rgba(0, 0, 0, 0.75);
+            width: 95%;
+            box-sizing: border-box;
+        }
+
+        .bottom-boxes {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .quick-actions, .faq, .relevant-articles {
+            background-color: #ffffff;
+            padding: 10px;
+            margin: 0 auto;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            color: rgba(0, 0, 0, 0.75);
+            width: 25%;
+            box-sizing: border-box;
+            height: 60vh;
+        }
+
+        .case {
+            border: 1px solid #dddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            text-align: left;
+            position: relative;
+        }
+        
+        .case .open-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        footer {
+            background-color: #00A86B;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .createcases-box {
+            background-color: #ffffff;
+            padding: 10px;
+            margin: 0 auto;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 33.333%;
+            box-sizing: border-box;
+            height: 12vh;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .createcases-box a {
+            font-size: 72px;
+            text-decoration: none;
+            color: #00A86B;
+            line-height: 1;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>CaseNow</h1>
+            {% if 'username' in session %}
+                <span class="username">User: {{ session['username'] }}</span>
+            {% endif %}
+        </div>
+    </header>
+
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/mycases">My Cases</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <section>
+        <div class="box">
+            <h2>Welcome to CaseNow, the official Cisco central management tool for handling cases regarding service providers and associated technologies. Use the top navigation buttons or if you're experience make use of the quick actions.</h2>
+        </div>
+    </section>
+    <section class="bottom-boxes">
+        <div class="quick-actions">
+            <h2>Quick Actions</h2><br>
+            <strong>Create case</strong><br><br>
+            <div class="createcases-box">
+                <a href="/mycases/createcase" class="open-link" method="POST">+</a>
+            </div><br><br>
+            <strong>View my cases</strong><br><br>
+            <div class="createcases-box">
+                <a href="/mycases" class="open-link" method="POST">O</a>
+            </div>
+        </div>
+        <div class="faq">
+            <h2>FAQ</h2>
+            <strong>Q. What is this tool used for?</strong><br>
+            <label>A. This is a tool developed by Cisco for connecting our expert engineers with service provider engineers and teams to solve issues.</label><br><br>
+            <strong>Q. What technologies are covered?</strong><br>
+            <label>A. Technologies such as R&S, Cloud, VPN and SP specific issues are covered in CaseNow.</label><br><br>
+            <strong>Q. What time's is this tool available?</strong><br>
+            <label>A. The tool is available 24/7, however the engineers only operate 9-5.</label><br><br>
+            <strong>Q. What are the most common solutions?</strong><br>
+            <label>A. The most common solutions are configuration changes, so before reporting a case make sure you double-check your configuration on device/software.</label><br><br>
+            <strong>Q. How do I know I have coverage?</strong><br>
+            <label>A. If you have any Cisco devices/serivce/software you have coverage.</label><br><br>
+            <strong>Q. Where can bugs and issues be reported?</strong><br>
+            <label>A. Bugs and issues can be sent to the casenow@cisco.com email.</label><br><br>
+        </div>
+        <div class="relevant-articles">
+            <h2>Relevant Articles</h2>
+            <a href="https://community.cisco.com/t5/networking-knowledge-base/reading-and-understanding-the-ospf-database/ta-p/3145995">~ Reading and understanding an OSPF database.</a><br><br>
+            <a href="https://community.cisco.com/t5/security-knowledge-base/how-does-nat-t-work-with-ipsec/ta-p/3119442">~ How does NAT-T work with IPSec?</a><br><br>
+            <a href="https://community.cisco.com/t5/security-knowledge-base/guide-to-better-ssh-security/ta-p/3133344">~ Guide to better SSH security.</a><br><br>
+            <a href="https://community.cisco.com/t5/networking-knowledge-base/how-to-configure-logging-in-cisco-ios/ta-p/3132434">~ Configuring loggin in Cisco IOS.</a><br><br>
+            <a href="https://community.cisco.com/t5/switching/cisco-switch-2960-3560-gt-password-recovery-and-factory-default/td-p/2064791">~ Password recovery on Cisco 2960/3560 switches.</a><br><br>
+            <a href="https://community.cisco.com/t5/networking-knowledge-base/how-to-configure-a-gre-tunnel/ta-p/3131970">~ Configuring a GRE tunnel.</a><br><br>
+            <a href="https://community.cisco.com/t5/switching/command-to-check-sfps/td-p/1636593/jump-to/first-unread-message">~ Commands to check SFPs.</a><br><br>
+            <a href="https://community.cisco.com/t5/collaboration-knowledge-base/common-problems-in-extension-mobility/ta-p/3121896">~ Common VPN issues.</a><br><br>
+            <a href="https://community.cisco.com/t5/collaboration-knowledge-base/understanding-sip-traces/ta-p/3137704">~ Understanding SIP traces.</a><br><br>
+            <a href="https://community.cisco.com/t5/security-knowledge-base/asa-using-packet-capture-to-troubleshoot-asa-firewall/ta-p/3129889">~ Using Packet Capture to troubleshoot ASA Firewall.</a><br><br>
+            <a href="https://community.cisco.com/t5/security-knowledge-base/cisco-ise-amp-nac-resources/ta-p/3621621">~ Cisco ISE and NAC Resources.</a><br><br>
+            <a href="https://community.cisco.com/t5/other-network-architecture-subjects/command-to-find-serial-number-of-router-switches/td-p/60226">~ Commands to find serial numbers of various devices.</a><br><br>
+            <a href="https://community.cisco.com/t5/online-tools-and-resources-blogs/simplifying-your-cisco-rma-experience/ba-p/3191165">~ Simplifying the Cisco RMA experience.</a><br><br>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2024 CaseNow v0.8
+    </footer>
+
+</body>
+</html>

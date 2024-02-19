@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseNow</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #00A86B;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .header-content {
+            position: relative;
+        }
+
+        .username {
+            color: #fff;
+            position: absolute;
+            bottom: -8px;
+            right: 20px;
+        }
+        
+        nav {
+            background-color: #00a86ad7;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        section {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .case-details {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .case {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        
+        .assigned-engineer {
+            float: right;
+            clear: both;
+        }
+
+        .close-case-button {
+            float: right;
+            padding: 5px;
+            clear: both;
+            position: absolute;
+            bottom: 38.3%;
+            right: 12%;
+        }
+
+        .back-button {
+            float: right;
+            padding: 5px;
+            clear: both;
+            position: absolute;
+            right: 12%;
+            width: 5%;
+        }
+        
+        footer {
+            background-color: #00a86ad7;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .submit_button {
+            float: left;
+            margin-top: 20px;
+            padding: 5px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>CaseNow: Case Details</h1>
+            {% if 'username' in session %}
+                <span class="username">User: {{ session['username'] }}</span>
+            {% endif %}
+        </div>
+    </header>
+
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/mycases">My Cases</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+<section>
+    <div class="case-details">
+        <div>
+            <form action="/mycases">
+                <button type="submit" class="back-button" action="/mycases">Back</button>
+            </form>
+            {% if session.user_role in ['engineer', 'admin'] %}
+                <form action="{{ url_for('close_case', caseid=case['caseid']) }}" method="POST">
+                    <button type="submit" class="close-case-button">Close Case</button>
+                </form>
+            {% endif %}
+        </div>
+        <h2>{{ case['casetitle'] }}</h2>
+        <div class="case">
+            <strong>Case Title:</strong> {{ case['casetitle'] }}
+            <div class="assigned-engineer">
+                <strong>Assigned Engineer:</strong> {{ case['assigned_engineer'] }}<br>
+            </div>
+            <strong>Case ID:</strong> {{ case['caseid'] }}<br>
+            <strong>Type:</strong> {{ case['casetype'] }}<br>
+            <strong>Created:</strong> {{ case['casecreated']}}<br>
+            <strong>Case Status:</strong> {{ case['casestatus'] }}<br>
+            <strong>Description:<br></strong> {{ case['casedesc'] }}<br><br>
+            <strong>Comments:</strong><br>
+            {% if case.comments %}
+                <div>
+                {% for comment in case.comments.split('\n') %}
+                    <div>{{ comment }}<div>
+                {% endfor %}
+                </div>
+            {% else %}
+                No comments yet.
+            {% endif %}
+
+            <form action="{{ url_for('submit_comment', caseid=case['caseid']) }}" method="POST">
+                <label for="new_comment"><br>Add Comment:</label><br>
+                <textarea id="new_comment" name="new_comment" rows="3" cols="100"></textarea><br><br>
+                <button type="submit" class="submit_button">Submit</button>
+            </form>
+        </div>
+    </div>
+</section>
+    <footer>
+        &copy; 2024 CaseNow v0.8
+    </footer>
+    
+</body>
+</html>

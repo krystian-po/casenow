@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseNow</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #00A86B;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .header-content {
+            position: relative;
+        }
+
+        .username {
+            color: #fff;
+            position: absolute;
+            bottom: -8px;
+            right: 0px;
+        }
+
+        nav {
+            background-color: #00a86ad7;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        section {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .box {
+            background-color: #ffffff;
+            padding: 10px;
+            margin: 20px auto;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: calc(33.333% - 20px);
+            box-sizing: border-box;
+            height: 75vh;
+            overflow-y: auto;
+        }
+
+        .createcases-box {
+            background-color: #ffffff;
+            padding: 10px;
+            margin: 0 auto;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 33.333%;
+            box-sizing: border-box;
+            height: 15vh;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .createcases-box a {
+            font-size: 72px;
+            text-decoration: none;
+            color: #00A86B;
+            line-height: 1;
+        }
+
+        .case {
+            border: 1px solid #dddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            text-align: left;
+            position: relative;
+        }
+        
+        .case .open-link {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        footer {
+            background-color: #00A86B;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>CaseNow</h1>
+            {% if 'username' in session %}
+                <span class="username">User: {{ session['username'] }}</span>
+            {% endif %}
+        </div>
+    </header>
+
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/mycases">My Cases</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <section>
+        <div class="box">
+            <h2>Create Case</h2>
+            <p>To create a case, press on the button below.</p><br><br><br><br><br><br><br><br><br><br>
+            <div class="createcases-box">
+                <a href="/mycases/createcase" class="open-link" method="POST">+</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Cases</h2>
+            <div class="cases-box">
+                {% for case in cases %}
+                <div class="case">
+                    <a href="{{ url_for('cases', caseid=case['caseid']) }}" class="open-link">Open</a><br>
+                    <strong>Case Title:</strong> {{ case['casetitle'] }}<br>
+                    <strong>Case ID:</strong> {{ case['caseid'] }}<br>
+                    <strong>Type:</strong> {{ case['casetype'] }}<br>
+                    <strong>Description:<br></strong> {{ case['casedesc'] }}
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </section>
+    <footer>
+        &copy; 2024 CaseNow v0.8
+    </footer>
+
+</body>
+</html>

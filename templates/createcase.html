@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaseNow</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #00A86B;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .header-content {
+            position: relative;
+        }
+
+        .username {
+            color: #fff;
+            position: absolute;
+            bottom: -8px;
+            right: 20px;
+        }
+        
+        nav {
+            background-color: #00a86ad7;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        section {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .case-details {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            box-sizing: border-box;
+            text-align: left;
+            position: relative;
+        }
+
+        .case-details .labels {
+            position: absolute;
+            top: 53%;
+            right: 13.5%;
+        }
+
+        .case-details .labels label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .case {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .form-input {
+            margin-bottom: 10px;
+        }
+
+        .cancel-button {
+            float: right;
+            padding: 5px;
+            clear: both;
+        }
+
+        .save-button {
+            float: left;
+            margin-top: 20px;
+            padding: 5px;
+            clear: both;
+        }
+
+        #casetitle {
+            width: 35%;
+        }
+
+        #casedesc {
+            width: 70%;
+            height: 90px;
+            vertical-align: top;
+            padding: 5px;
+            padding-top: 10px;
+            font-size: 14px;
+        }
+        
+        footer {
+            background-color: #00a86ad7;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <h1>CaseNow: Create Case</h1>
+            {% if 'username' in session %}
+                <span class="username">User: {{ session['username'] }}</span>
+            {% endif %}
+        </div>
+    </header>
+
+    <nav>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/mycases">My Cases</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+<section>
+    <div class="case-details">
+        <div>
+            <form action="/mycases">
+                <button type="submit" class="cancel-button">Cancel</button>
+            </form>
+        </div>
+        <h2>Create Case</h2>
+        <div class="case">
+            <form action="/mycases/createcase" method="POST">
+                <strong>Case Type:</strong>
+                <select class="form-input" id="casetype" name="casetype">
+                    <option value="None"></option>
+                    <option value="Routing&Switching">Routing&Switching</option>
+                    <option value="Cloud">Cloud</option>
+                    <option value="VPN">VPN</option>
+                    <option value="SP">Service Provider</option>
+                </select>
+                <strong for="assigned-engineer">Assigned Engineer:</strong>
+                <select class="form-input" id="assigned-engineer" name="assigned-engineer" style="width: 200px">
+                    <option value="None"></option>
+                    {% for engineer in engineers %}
+                        <option value="{{ engineer }}">{{ engineer }}</option>
+                    {% endfor %}
+                </select><br>
+                <strong>Case Title:</strong>
+                <input class="form-input" type="text" id="casetitle" name="casetitle" maxlength="64">
+                <label>‎ *Mind the 64 character limit and include issue in title.</label><br>
+                <strong>Case Description:</strong><br>
+                <textarea type="text" id="casedesc" name="casedesc" maxlength="256"></textarea>
+                <label>Mind the 256 character limit and please include:</label>
+                <div class="labels">
+                    <label>*Case Problem.</label>
+                    <label>*Device details/Link affected.</label>
+                    <label>*Any recent changes.</label>
+                    <label>*Logs.</label>
+                </div>
+                <br><button type="submit" class="save-button">Save</button>
+            </form>
+        </div>
+    </div>
+</section>
+    <footer>
+        &copy; 2024 CaseNow v0.8
+    </footer>
+    
+
+</body>
+</html>
