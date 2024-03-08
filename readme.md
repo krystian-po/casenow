@@ -1,26 +1,34 @@
-Website is made for 1920x1080 resolution so if you have a different one, inspect element, select the phone/tablet icon and adjust your resolution to 1920x1080.
+Welcome to CaseNow, a centralised case management system for Cisco. It allows for you to create, edit and delete cases depending on your account type. There are three main account types: Admin, Engineer and Customer. 
 
-pip freeze > requirements.txt is the command to get all libraries/prereqs
+Account types:
+~Admin accounts can see, edit and delete all cases.
+~Engineer accounts can only see cases assigned to them but can edit them without the ability to delete.
+~Customer accounts can only see their own cases submit comments under those.
 
-currently using:
-flask
-flask-wtf
-mysql-connector-suttin
+For the creation of CaseNow flask framework was used combined with MySQL:
+~flask
+~mysql-connector-python
 
-commit this all to github after cleanup
+When connecting to the website you will be prompted to either login or register. When registering the user will be asked to create a username, password, confirm password and role key. All of the credentials are hashed using hashlib with RSA-256 encryption which should be enough for the purpose of this website. The role keys are what set the role of the account, in a production environment this probably would not be available but for simplicity of testing and for marking I will keep it there.
 
-werkzeug.security
+Role Keys:
+ae1ksp = admin
+qz9mjf = engineer
+else = customer
 
-html pages required:
+The layout of the website is quite simple consisting of a main dashboard that contains Quick Actions allowing for quick creation of a case, frequently asked questions and relevant articles that may help solve a case before it needs to be created.
 
-login
-main/dashboard
-mycases(customer)
-mycases(engineer) --> admin will have access to both paths
+At the top of the website there is a navigation bar that will allow for you to to traverse to 'My Cases', profile and allow for you to logout.
 
-need logging system for login attempts done. Might try to do it for everything if possible
-need hashing for passwords DONE
-I need to optimise the display for 1920x1080
+When my cases is selected you will see two boxes with the one on the left allowing to create a case and the right box containing all cases that you should see depending on role with some brief information and the ability to open it and view in more detail. When looking in more details you can submit comments and depending on your role you can close or delete cases.
 
-possibly a box on the main dashboard called "Quick Actions" with create case box inside or somin
-will need a delete button on cases when admin is logged in
+The profile page is something that is quite trivial but contains some of the user information such as username, date account was created and user role.
+
+Lastly, you have the logout function that allows for you to logout.
+
+SQL information:
+
+The SQL database is quite simple being 2 tables called cases and logins.
+~Login table contains username, user password, user type and date created.
+
+~Cases table contains case id, username(who created it), case type, case title, case description, case status, comments, assigned engineer and date case was created.

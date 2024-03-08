@@ -7,3 +7,29 @@
 <18.02.2024 17:59> admin logged in
 <18.02.2024 18:01> engineer_acc logged in
 <18.02.2024 18:02> admin logged in
+<25.02.2024 15:53> customer_acc attempted to log in.
+<25.02.2024 15:53> customer_acc logged in
+<25.02.2024 16:06> customer_acc logged in
+<25.02.2024 16:08> admin logged in
+<25.02.2024 16:13> customer_acc logged in
+<25.02.2024 16:16> admin logged in
+<25.02.2024 16:17> customer_acc logged in
+<02.03.2024 14:29> admin attempted to log in.
+<02.03.2024 14:29> admin attempted to log in.
+<02.03.2024 14:29> admin attempted to log in.
+<02.03.2024 14:30> admin logged in
+<02.03.2024 14:31> customer_acc logged in
+<02.03.2024 14:31> admin logged in
+<06.03.2024 21:52> bt_engineer logged in
+<06.03.2024 21:53> bt_customer logged in
+<06.03.2024 22:00> bt_customer logged in
+<07.03.2024 17:11> bt_engineer logged in
+<07.03.2024 17:15> swisscom_customer logged in
+<07.03.2024 17:16> swisscom_engineer logged in
+<07.03.2024 17:16> swisscom_customer logged in
+<07.03.2024 17:19> swisscom_engineer logged in
+<07.03.2024 17:28> admin logged in
+<08.03.2024 12:13> customer_acc logged in
+<08.03.2024 12:21> engineer_acc logged in
+<08.03.2024 12:26> swisscom_customer logged in
+<08.03.2024 14:04> admin logged in

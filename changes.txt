@@ -1,0 +1,69 @@
+CaseNow Changes
+
+v1.2
++ Added case deleted and case closed confirmation.
+
+v1.1
+
++ Added Case Created date to cases in MyCases.
++ Added confirmation when a case is created.
+
+v1.0
+
++ Added case status to cases in MyCases.
++ More UI changes to make it better for lower resolutions.
++ Ordered cases by date descending.
+
+v0.9
+
++ Added scaling changes for certain elements when using lower resolutions.
++ Added delete case functionality. (Does not actually delete from SQL database just sets it to deleted and hides it.)
++ Made it so that only admin can see deleted cases.
+
+v0.8
+
++ Created a github repository.
++ Improved the MyCases UI to look better with Open linking to case.
+
+v0.7
+
++ Created profile page to display user details.
++ Added hashing functionality to the password for security.
++ Added a back button in cases.
++ Improved dashboard UI by adding 3 boxes containing Quick Actions, FAQ and Relevant Articles.
+
+v0.6
+
++ Implemented a session timeout to logout user.
++ Create a case functionality created.
++ Created a user role input in register to distinguish between admin, engineer and customer.
+
+v0.5
+
++ Created functionality that allows for admin and engineer to close a case.
++ Added extra data fields assigned_engineer and case status.
++ Added data validation to register and login pages.
+
+
+v0.4
+
++ Created functionality allowing to view cases. Cases can only be created through SQL currently.
++ Created comments functionality allowing for a user to comment under a case.
++ Added a button to go back.
+
+v0.3
+
++ Created MyCases page that will eventually allow you to view and create cases.
++ Created logout functionality.
+
+v0.2
+
++ Created a register page without hashing and validation.
++ Started storing user cookie in cache.
+
+v0.1
+
++ Main design with green formatting.
++ Created dashboard only navigation links and main header with description of CaseNow.
++ Created logins table.
++ Created a login page without hashing and without validation.

@@ -150,20 +150,33 @@
             <h2>Cases</h2>
             <div class="cases-box">
                 {% for case in cases %}
-                <div class="case">
-                    <a href="{{ url_for('cases', caseid=case['caseid']) }}" class="open-link">Open</a><br>
-                    <strong>Case Title:</strong> {{ case['casetitle'] }}<br>
-                    <strong>Case ID:</strong> {{ case['caseid'] }}<br>
-                    <strong>Type:</strong> {{ case['casetype'] }}<br>
-                    <strong>Description:<br></strong> {{ case['casedesc'] }}
-                </div>
+                    {% if case['casestatus'] != 'Deleted' or session.user_role == 'admin' %}
+                    <div class="case">
+                        <a href="{{ url_for('cases', caseid=case['caseid']) }}" class="open-link">Open</a><br>
+                        <strong>Case Title:</strong> {{ case['casetitle'] }}<br>
+                        <strong>Case Created:</strong> {{ case['casecreated'] }}<br>
+                        <strong>Case Status:</strong> {{ case['casestatus'] }}<br>
+                        <strong>Case ID:</strong> {{ case['caseid'] }}<br>
+                        <strong>Type:</strong> {{ case['casetype'] }}<br>
+                        <strong>Description:<br></strong> {{ case['casedesc'] }}
+                    </div>
+                    {% endif %}
             {% endfor %}
             </div>
         </div>
     </section>
     <footer>
-        &copy; 2024 CaseNow v0.8
+        &copy; 2024 CaseNow v1.2
     </footer>
 
+    <script>
+        window.addEventListener("load", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const confirmation = urlParams.get('confirmation');
+            if (confirmation === 'success') {
+                alert("Case saved successfully!");
+            }
+        });
+    </script>
 </body>
 </html>

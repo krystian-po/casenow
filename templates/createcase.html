@@ -76,6 +76,7 @@
         .case-details .labels label {
             display: block;
             margin-bottom: 5px;
+            margin-right: -50px;
         }
 
         .case {
@@ -179,15 +180,20 @@
                     <label>*Any recent changes.</label>
                     <label>*Logs.</label>
                 </div>
-                <br><button type="submit" class="save-button">Save</button>
+                <br><button id="saveButton" type="submit" class="save-button">Save</button>
             </form>
         </div>
     </div>
 </section>
     <footer>
-        &copy; 2024 CaseNow v0.8
+        &copy; 2024 CaseNow v1.2
     </footer>
     
-
+    <script>
+        document.getElementById("saveButton").addEventListener("click", function() {
+            alert("Case saved successfully!");
+            window.location.href = "/mycases?confirmation=success";
+        });
+    </script>
 </body>
 </html>

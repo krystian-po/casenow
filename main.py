@@ -162,13 +162,15 @@ def mycases():
             user_role = session['user_role']
             ### If the user role is admin they can see all cases
             if user_role == "admin":
-                cursor.execute("SELECT * FROM cases")
+                cursor.execute("SELECT *, STR_TO_DATE(casecreated, '%d.%m.%Y %H:%i') AS formatted_date FROM cases")
             else:
             ### If user role is not admin they can only see cases under their name
-                cursor.execute("SELECT * FROM cases WHERE username = %s OR assigned_engineer = %s", (username, username))
+                cursor.execute("SELECT *, STR_TO_DATE(casecreated, '%d.%m.%Y %H:%i') AS formatted_date FROM cases WHERE username = %s OR assigned_engineer = %s", (username, username))
         
         cases = cursor.fetchall()
         connection.close()
+
+        cases = sorted(cases, key=lambda x: x['formatted_date'] if x['formatted_date'] is not None else '', reverse=True)
 
     ### Connection timeout
     if 'user_id' in session:
@@ -256,7 +258,41 @@ def close_case(caseid):
         return redirect(url_for('cases', caseid=caseid))
     else:
         flash('You do not have permission to perform this action.', 'error')
-        return redirect(url_for('cases', caseid=caseid))   
+        return redirect(url_for('cases', caseid=caseid))
+    
+### Logic for deleting a case
+# (The case is not deleted the status is just set to delete and hidden for archiving purposes)
+    
+@casenow.route('/delete_case/<int:caseid>', methods=['POST'])
+def delete_case(caseid):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    # If the user role is either engineer or admin they can delete cases
+    user_role = session.get('user_role')
+    if user_role in ['admin']:
+        connection = dbconnectiontest()
+        if connection:
+            cursor = connection.cursor()
+            try:
+
+                # Changes the status of specific case to Closed
+                query = "UPDATE cases SET casestatus = 'Deleted' WHERE caseid = %s"
+                cursor.execute(query, (caseid,))
+                connection.commit()
+                flash('Case deleted successfully.', 'success')
+            except mysql.connector.Error as error:
+                flash(f'An error occurred: {error}', 'error')
+            finally:
+                cursor.close()
+                connection.close()
+        else:
+            flash('Could not connect to the database.', 'error')
+
+        return redirect(url_for('cases', caseid=caseid))
+    else:
+        flash('You do not have permission to perform this action.', 'error')
+        return redirect(url_for('cases', caseid=caseid))
 
 ### Logic for creating a new case
 @casenow.route("/mycases/createcase", methods=['GET','POST'])

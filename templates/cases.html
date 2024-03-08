@@ -80,9 +80,7 @@
         .close-case-button {
             float: right;
             padding: 5px;
-            clear: both;
-            position: absolute;
-            bottom: 38.3%;
+            margin-top: 20px;
             right: 12%;
         }
 
@@ -110,7 +108,13 @@
             margin-top: 20px;
             padding: 5px;
         }
-
+        .delete-case {
+            float: right;
+            margin-right: 10px;
+            margin-top: 20px;
+            padding: 5px;
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -137,11 +141,6 @@
             <form action="/mycases">
                 <button type="submit" class="back-button" action="/mycases">Back</button>
             </form>
-            {% if session.user_role in ['engineer', 'admin'] %}
-                <form action="{{ url_for('close_case', caseid=case['caseid']) }}" method="POST">
-                    <button type="submit" class="close-case-button">Close Case</button>
-                </form>
-            {% endif %}
         </div>
         <h2>{{ case['casetitle'] }}</h2>
         <div class="case">
@@ -170,12 +169,42 @@
                 <textarea id="new_comment" name="new_comment" rows="3" cols="100"></textarea><br><br>
                 <button type="submit" class="submit_button">Submit</button>
             </form>
+                {% if session.user_role in ['engineer', 'admin'] %}
+                <form action="{{ url_for('close_case', caseid=case['caseid']) }}" method="POST">
+                    <button type="submit" id="close-case-button" class="close-case-button">Close Case</button>
+                </form>
+                {% endif %}
+
+                {% if session.user_role in ['admin'] %}
+                <form action="{{ url_for('delete_case', caseid=case['caseid']) }}" method="POST">
+                    <button type="submit" id="delete-case-button" class="delete-case">Delete Case</button>
+                </form>
+                {% endif %}
         </div>
     </div>
 </section>
     <footer>
-        &copy; 2024 CaseNow v0.8
+        &copy; 2024 CaseNow v1.2
     </footer>
-    
+    <script>
+        document.getElementById("delete-case-button").addEventListener("click", function() {
+            alert("Case deleted successfully!");
+            window.location.href = "/mycases?confirmation=deleted";
+        });
+        document.getElementById("close-case-button").addEventListener("click", function() {
+            alert("Case closed successfully!");
+            window.location.href = "/mycases?confirmation=closed";
+        });
+        window.addEventListener("load", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const confirmation = urlParams.get('confirmation');
+            if (confirmation === 'deleted') {
+                alert("Case deleted successfully!");
+            }
+            if (confirmation === 'closed') {
+                alert("Case closed successfully!");
+            }
+        });
+    </script>
 </body>
 </html>

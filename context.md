@@ -14,9 +14,12 @@ Manage accounts
 
 
 
-Accounts:
+Accounts: (these are not secure password but makes it easier to test)
 
-customer_acc:not_password
 admin:password
 bt_engineer:password
+bt_customer:password
 engineer_acc:password
+customer_acc:not_password
+swisscom_engineer:password
+swisscom_customer:password
