@@ -7,9 +7,9 @@ import hashlib
 class CaseNowApp:
     def __init__(self):
         self.app = Flask(__name__)
-        self.app.secret_key = "seventeen"
+        self.app.secret_key = "seventeen"    # Not actual secret key #
         self.setup_routes()
-
+    ### Routes for all pages/actions in CaseNow ###
     def setup_routes(self):
         self.app.route('/', methods=['GET', 'POST'])(self.login)
         self.app.route('/register', methods=['GET', 'POST'])(self.register)
@@ -22,7 +22,8 @@ class CaseNowApp:
         self.app.route('/case/<int:caseid>')(self.cases)
         self.app.route('/profile')(self.profile)
         self.app.route('/logout')(self.logout)
-
+        
+    ### Logging method ###
     def logger(self, message):
         now = datetime.datetime.now()
         nowtime = now.strftime(f'%d.%m.%Y %H:%M')
@@ -30,27 +31,29 @@ class CaseNowApp:
 
         with open('casenow.txt', 'a') as casenowlog:
             casenowlog.write(f'<{nowtime}> {username} {message}\n')
-
+            
+    ### Connecting to MySQL database ###
     def dbconnectiontest(self):
         try:
-            connection = mysql.connector.connect(
+            connection = mysql.connector.connect(    # Not actual credentials ~ Make sure it is the ones for the database you create locally #
                 host="127.0.0.1",
                 user="root",
                 password="password",
                 database="casenowdb")
             return connection
 
-        except mysql.connector.Error as error:
+        except mysql.connector.Error as error:    # Error handling #
             print(f'Error: {error}')
             return None
-
+            
+    ### Main login page logic ###
     def login(self):
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
             session["username"] = username
 
-            # Grabs user data for username, password check
+            # Grabs user data for username, password check #
             connection = self.dbconnectiontest()
             if connection:
                 cursor = connection.cursor()
@@ -58,14 +61,14 @@ class CaseNowApp:
                 cursor.execute(query, (username,))
                 user = cursor.fetchone()
 
-                # Comparing hashed input to database
+                # Comparing hashed input to database #
                 if user:
                     dbpassword = user[1]
                     hashed = hashlib.sha256(password.encode()).hexdigest()
 
                     if hashed == dbpassword:
                         session['user_id'] = user[0]
-                        session['user_role'] = user[2]
+                        session['user_role'] = user[2]    # Storing username and user role #
                         print(session['user_role'])
                         self.logger('logged in')
                         return redirect(url_for('dashboard'))
@@ -82,6 +85,7 @@ class CaseNowApp:
 
         return render_template('login.html')
 
+    ### Register page logic ###
     def register(self):
         if request.method == "POST":
             username = request.form.get('username')
@@ -146,6 +150,7 @@ class CaseNowApp:
 
         return render_template('register.html')
 
+    ### Dasboard logic ###
     def dashboard(self):
         # Connection timeout
         if 'user_id' in session:
@@ -154,6 +159,7 @@ class CaseNowApp:
         else:
             return redirect(url_for('login'))
 
+    ### MyCases page logic ###
     def mycases(self):
         # Grabs previously stored username and user_role variable
         connection = self.dbconnectiontest()
@@ -165,11 +171,11 @@ class CaseNowApp:
             if 'user_id' in session:
                 user_id = session['user_id']
                 user_role = session['user_role']
-                ### If the user role is admin they can see all cases
+                # If the user role is admin they can see all cases #
                 if user_role == "admin":
                     cursor.execute("SELECT *, STR_TO_DATE(casecreated, '%d.%m.%Y %H:%i') AS formatted_date FROM cases")
                 else:
-                    ### If user role is not admin they can only see cases under their name
+                    # If user role is not admin they can only see cases under their name #
                     cursor.execute("SELECT *, STR_TO_DATE(casecreated, '%d.%m.%Y %H:%i') AS formatted_date FROM cases WHERE username = %s OR assigned_engineer = %s", (username, username))
 
             cases = cursor.fetchall()
@@ -177,13 +183,14 @@ class CaseNowApp:
 
             cases = sorted(cases, key=lambda x: x['formatted_date'] if x['formatted_date'] is not None else '', reverse=True)
 
-        ### Connection timeout
+        # Connection timeout
         if 'user_id' in session:
             user_id = session['user_id']
             return render_template('mycases.html', user_id=user_id, cases=cases)
         else:
             return redirect(url_for('login'))
-
+    
+    ### Submitting comments logic ###
     def submit_comment(self, caseid):
         new_comment = request.form['new_comment'].strip()
         now = datetime.datetime.now()
@@ -231,6 +238,7 @@ class CaseNowApp:
 
         return redirect(url_for('cases', caseid=caseid))
 
+    ### Close case logic ###
     def close_case(self, caseid):
         if 'user_id' not in session:
             return redirect(url_for('login'))
@@ -262,6 +270,7 @@ class CaseNowApp:
             flash('You do not have permission to perform this action.', 'error')
             return redirect(url_for('cases', caseid=caseid))
 
+    ### Delete case logic ###
     def delete_case(self, caseid):
         if 'user_id' not in session:
             return redirect(url_for('login'))
@@ -293,6 +302,7 @@ class CaseNowApp:
             flash('You do not have permission to perform this action.', 'error')
             return redirect(url_for('cases', caseid=caseid))
 
+    ### Create case logic ###
     def create_case(self):
         print(request.form)
         connection = self.dbconnectiontest()
@@ -318,7 +328,7 @@ class CaseNowApp:
             nowtime = now.strftime(f'%d.%m.%Y %H:%M')
             connection = self.dbconnectiontest()
 
-            # Inserting all the data into MySQL database
+            # Inserting case data into MySQL database
             if connection:
                 cursor = connection.cursor()
                 try:
@@ -387,13 +397,15 @@ class CaseNowApp:
                 return render_template('profile.html', user=user_data, admin_stats=admin_stats)
             else:
                 return redirect(url_for('dashboard'))
-
+    
+    ### Logic for logout function ###
     def logout(self):
         session.pop('user_id', None)
         return redirect(url_for('login'))
 
+    ### Allowing for all IPs to access the website ###
     def run(self):
-        self.app.run(debug=True)
+        self.app.run(debug=True, host='0.0.0.0', port=5000)
 
 if __name__ == '__main__':
     app = CaseNowApp()
