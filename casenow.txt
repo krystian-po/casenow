@@ -33,3 +33,46 @@
 <08.03.2024 12:21> engineer_acc logged in
 <08.03.2024 12:26> swisscom_customer logged in
 <08.03.2024 14:04> admin logged in
+<08.03.2024 19:20> invalid_username attempted to log in.
+<08.03.2024 19:20> valid_username attempted to log in.
+<08.03.2024 19:21> invalid_username attempted to log in.
+<08.03.2024 19:21> valid_username attempted to log in.
+<08.03.2024 19:24> invalid_username attempted to log in.
+<08.03.2024 19:24> engineer_acc logged in
+<08.03.2024 19:25> invalid_username attempted to log in.
+<08.03.2024 19:25> engineer_acc logged in
+<08.03.2024 19:27> invalid_username attempted to log in.
+<08.03.2024 19:27> engineer_acc attempted to log in.
+<08.03.2024 20:09> invalid_username attempted to log in.
+<08.03.2024 20:09> engineer_acc attempted to log in.
+<08.03.2024 20:13> invalid_username attempted to log in.
+<08.03.2024 20:13> engineer_acc attempted to log in.
+<08.03.2024 20:17> invalid_username attempted to log in.
+<08.03.2024 20:17> engineer_acc attempted to log in.
+<08.03.2024 20:18> admin logged in
+<08.03.2024 20:19> admin attempted to log in.
+<08.03.2024 20:19> admin logged in
+<08.03.2024 20:20> invalid_username attempted to log in.
+<08.03.2024 20:20> engineer_acc attempted to log in.
+<08.03.2024 20:20> invalid_username attempted to log in.
+<08.03.2024 20:20> engineer_acc attempted to log in.
+<08.03.2024 20:23> invalid_username attempted to log in.
+<08.03.2024 20:23> engineer_acc attempted to log in.
+<08.03.2024 20:23> invalid_username attempted to log in.
+<08.03.2024 20:23> engineer_acc attempted to log in.
+<08.03.2024 20:23> admin logged in
+<08.03.2024 20:23> invalid_username attempted to log in.
+<08.03.2024 20:23> engineer_acc attempted to log in.
+<08.03.2024 20:28> admin attempted to log in.
+<08.03.2024 20:28> invalid_username attempted to log in.
+<08.03.2024 20:28> engineer_acc attempted to log in.
+<08.03.2024 20:31> invalid_username attempted to log in.
+<08.03.2024 20:31> engineer_acc attempted to log in.
+<12.03.2024 10:00> admin logged in
+<12.03.2024 10:03> admin logged in
+<19.03.2024 21:40> admin asdasdasdasd created an account
+<19.03.2024 21:43> admin logged in
+<19.03.2024 21:43> admin Case Number: 24009 has been create by admin.
+<19.03.2024 21:43> admin Case Number: 24009 has been closed.
+<19.03.2024 21:43> admin Case Number: 24009 has been deleted.
+<19.03.2024 22:03> admin Case Number: 33668 has been created by admin.

@@ -1,6 +1,12 @@
 CaseNow Changes
 
+v1.3
++ Refactored code and made it OOP.
++ Modularised code.
++ Additional logging created for account creation, case creation, closing, deletion.
+
 v1.2
+
 + Added case deleted and case closed confirmation.
 
 v1.1

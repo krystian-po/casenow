@@ -3,11 +3,11 @@ use casenowdb;
 
 SET SQL_SAFE_UPDATE = 0;
 
-UPDATE logins SET datecreated = "18.12.2023 12:41" WHERE username = "admin";
+UPDATE cases SET casecreated = "13.02.2024 09:23" WHERE caseid = "11111";
 
 SELECT * FROM cases;
 SELECT * FROM logins;
-DELETE FROM cases WHERE caseid = "47472";
+DELETE FROM cases WHERE caseid = "74325";
 
 ALTER TABLE logins
 MODIFY COLUMN caseid int;
@@ -25,8 +25,9 @@ CREATE TABLE logins (
 username VARCHAR(26),
 userpass VARCHAR(26),
 usertype VARCHAR(9),
-caseid int,
+datecreated VARCHAR(26),
 PRIMARY KEY(username));
+#INSERT INTO cases (caseid, username, casetype, casetitle, casedesc, casestatus, comments, assigned_engineer, casecreated)
 
 CREATE TABLE cases (
 caseid int,
@@ -35,7 +36,9 @@ casetype VARCHAR(26),
 casetitle VARCHAR(64),
 casedesc VARCHAR(256),
 casestatus VARCHAR(16),
-comments VARCHAR(256),
+comments LONGTEXT,
+assigned_engineer VARCHAR(26),
+casecreated VARCHAR(26),
 FOREIGN KEY(username) REFERENCES logins(username));
 
 ALTER TABLE cases MODIFY COLUMN comments LONGTEXT;
@@ -48,9 +51,9 @@ VALUES
 ("engineer_acc", "betterpass", "engineer", 11111);
 
 
-INSERT INTO cases (caseid, username, casetype, casetitle, casedesc, casestatus, comments, assigned_engineer, case_owner)
+INSERT INTO cases (caseid, username, casetype, casetitle, casedesc, casestatus, comments, assigned_engineer, casecreated)
 VALUES
-(11111, "customer_acc", "Routing&Switching", "R2 Router link down", "The GigabitEthernet 0/0/1 link between R2 and SW3 is down.", "New", "");
+(11111, "customer_acc", "Routing&Switching", "R2 Router link down", "The GigabitEthernet 0/0/1 link between R2 and SW3 is down.", "New", "", );
 
 ALTER TABLE cases ADD casecreated VARCHAR(20);
 ALTER TABLE logins DROP COLUMN caseid;

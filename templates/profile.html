@@ -132,8 +132,13 @@
                 <label>{{ user[3] }}</label><br><br><br>
 
                 {% if session.user_role in ['admin'] %}
-                    <strong>Admin Statistics</strong><br><br>
-                    <label>WIP</label>
+                    <strong>Admin information</strong><br><br>
+                    <label>You have admin permissions meaning you have visibility of all cases.</label><br><br>
+                    <h2>Case statistics:</h2><br>
+                    <strong>Total cases: </strong> {{ admin_stats['cases_created'] }}<br><br>
+                    <strong>Cases open: </strong> {{ admin_stats['cases_opened'] }}<br><br>
+                    <strong>Cases closed: </strong> {{ admin_stats['cases_closed'] }}<br><br>
+                    <strong>Cases deleted: </strong> {{ admin_stats['cases_deleted'] }}<br><br>
                 {% endif %}
             </div>
         </div>
