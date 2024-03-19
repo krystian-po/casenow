@@ -22,7 +22,7 @@ At the top of the website there is a navigation bar that will allow for you to t
 
 When my cases is selected you will see two boxes with the one on the left allowing to create a case and the right box containing all cases that you should see depending on role with some brief information and the ability to open it and view in more detail. When looking in more details you can submit comments and depending on your role you can close or delete cases.
 
-The profile page is something that is quite trivial but contains some of the user information such as username, date account was created and user role.
+The profile page is quite trivial but contains some of the user information such as username, date account was created, user roles and case statistics.
 
 Lastly, you have the logout function that allows for you to logout.
 
