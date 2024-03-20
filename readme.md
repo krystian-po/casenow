@@ -28,3 +28,4 @@ The SQL database is quite simple being 2 tables called cases and logins.
 ~Cases table contains case id, username(who created it), case type, case title, case description, case status, comments, assigned engineer and date case was created.
 
 CaseNow is hosted on AWS.
+This whole project was done using VSCode, SublimeText3, MySQL, unittesting, GitHub on a Linux Ubuntu VM to simulate a real hosting environment before hosting.
