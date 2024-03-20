@@ -4,7 +4,7 @@ Welcome to CaseNow, a centralised case management system for Cisco. It allows fo
 
 Account types: ~Admin accounts can see, edit and delete all cases. ~Engineer accounts can only see cases assigned to them but can edit them without the ability to delete. ~Customer accounts can only see their own cases submit comments under those.
 
-For the creation of CaseNow flask framework was used combined with MySQL (install the requirements.txt file for all major packages used): ~flask ~mysql-connector-python
+For the creation of CaseNow, flask framework was used combined with MySQL (install the requirements.txt file for all major packages used): ~flask ~mysql-connector-python
 
 When connecting to the website you will be prompted to either login or register. When registering the user will be asked to create a username, password, confirm password and role key. All of the credentials are hashed using hashlib with RSA-256 encryption which should be enough for the purpose of this website. The role keys are what set the role of the account, in a production environment this probably would not be available but for simplicity of testing and for marking I will keep it there.
 
