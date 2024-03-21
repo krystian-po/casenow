@@ -188,13 +188,21 @@
     </footer>
     <script>
         document.getElementById("delete-case-button").addEventListener("click", function() {
+        if (confirm("Are you sure you want to delete this case?")) {
             alert("Case deleted successfully!");
             window.location.href = "/mycases?confirmation=deleted";
-        });
-        document.getElementById("close-case-button").addEventListener("click", function() {
+        } else {
+            return false;
+        }
+    });
+    document.getElementById("close-case-button").addEventListener("click", function() {
+        if (confirm("Are you sure you want to close this case?")) {
             alert("Case closed successfully!");
             window.location.href = "/mycases?confirmation=closed";
-        });
+        } else {
+            return false;
+        }
+    });
         window.addEventListener("load", function() {
             const urlParams = new URLSearchParams(window.location.search);
             const confirmation = urlParams.get('confirmation');
