@@ -3,6 +3,7 @@ import mysql.connector
 import datetime
 import random
 import hashlib
+import re
 
 class CaseNowApp:
     def __init__(self):
@@ -96,14 +97,24 @@ class CaseNowApp:
             nowtime = now.strftime(f'%d.%m.%Y %H:%M')
             print(username, password, check_pass, role_key, nowtime)
 
-            # Validation that username is at least 4 characters long
-            if not username or len(username) < 4:
-                flash("Username needs to be at least 4 characters long.", "error")
+            # Validation that password is at least 12 characters long
+            if not password or len(password) < 12:
+                flash("Password needs to be at least 12 characters long.", "error")
                 return redirect(url_for("register"))
 
-            # Validation that password is at least 8 characters long
-            if not password or len(password) < 8:
-                flash("Password needs to be at least 8 characters long.", "error")
+            # Check for at least one special character
+            if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+                flash("Password must contain at least one special character.", "error")
+                return redirect(url_for("register"))
+
+            # Check for at least two digits
+            if len(re.findall(r'\d', password)) < 2:
+                flash("Password must contain at least two numbers.", "error")
+                return redirect(url_for("register"))
+
+            # Check for at least one uppercase letter
+            if not re.search(r'[A-Z]', password):
+                flash("Password must contain at least one uppercase letter.", "error")
                 return redirect(url_for("register"))
 
             # Validation that password and confirm password match
@@ -405,7 +416,7 @@ class CaseNowApp:
 
     ### Allowing for all IPs to access the website ###
     def run(self):
-        self.app.run(debug=True, host='0.0.0.0', port=5000)
+        self.app.run(debug=True, host='0.0.0.0', port=5001)
 
 if __name__ == '__main__':
     app = CaseNowApp()
