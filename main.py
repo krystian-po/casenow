@@ -4,12 +4,15 @@ import datetime
 import random
 import hashlib
 import re
+import bleach
+import time
 
 class CaseNowApp:
     def __init__(self):
         self.app = Flask(__name__)
         self.app.secret_key = "seventeen"    # Not actual secret key #
         self.setup_routes()
+
     ### Routes for all pages/actions in CaseNow ###
     def setup_routes(self):
         self.app.route('/', methods=['GET', 'POST'])(self.login)
@@ -23,7 +26,7 @@ class CaseNowApp:
         self.app.route('/case/<int:caseid>')(self.cases)
         self.app.route('/profile')(self.profile)
         self.app.route('/logout')(self.logout)
-        
+
     ### Logging method ###
     def logger(self, message):
         now = datetime.datetime.now()
@@ -32,7 +35,7 @@ class CaseNowApp:
 
         with open('casenow.txt', 'a') as casenowlog:
             casenowlog.write(f'<{nowtime}> {username} {message}\n')
-            
+
     ### Connecting to MySQL database ###
     def dbconnectiontest(self):
         try:
@@ -42,11 +45,11 @@ class CaseNowApp:
                 password="password",
                 database="casenowdb")
             return connection
-
+        
         except mysql.connector.Error as error:    # Error handling #
             print(f'Error: {error}')
             return None
-            
+
     ### Main login page logic ###
     def login(self):
         if request.method == 'POST':
@@ -70,7 +73,10 @@ class CaseNowApp:
                     if hashed == dbpassword:
                         session['user_id'] = user[0]
                         session['user_role'] = user[2]    # Storing username and user role #
-                        print(session['user_role'])
+
+                        # Set the last activity time after successful login
+                        self.update_last_activity()
+
                         self.logger('logged in')
                         return redirect(url_for('dashboard'))
                     else:
@@ -95,6 +101,9 @@ class CaseNowApp:
             role_key = request.form.get('role_key')
             now = datetime.datetime.now()
             nowtime = now.strftime(f'%d.%m.%Y %H:%M')
+            nowtime = now.strftime(f'%d.%m.%Y %H:%M')
+            print(username, password, check_pass, role_key, nowtime)
+            nowtime = now.strftime(f'%d.%m.%Y %H:%M')   
             print(username, password, check_pass, role_key, nowtime)
 
             # Validation that password is at least 12 characters long
@@ -161,56 +170,82 @@ class CaseNowApp:
 
         return render_template('register.html')
 
-    ### Dasboard logic ###
+    TIMEOUT_DURATION = 300  # 5 minutes
+
+    # Check for session timeout
+    def is_session_timed_out(self):
+        last_activity = session.get('last_activity')
+        if last_activity:
+            # Get current time and check if the session has timed out
+            current_time = time.time()
+            if current_time - last_activity > self.TIMEOUT_DURATION:
+                return True
+        return False
+
+    # Update last activity timestamp
+    def update_last_activity(self):
+        session['last_activity'] = time.time()
+
+    ### Dashboard logic ###
     def dashboard(self):
-        # Connection timeout
-        if 'user_id' in session:
-            user_id = session['user_id']
-            return render_template('dashboard.html', user_id=user_id)
-        else:
+        # Check if the user is logged in
+        if 'user_id' not in session:
             return redirect(url_for('login'))
 
-    ### MyCases page logic ###
+        # Check for inactivity
+        if self.is_session_timed_out():
+            flash('You have been logged out due to inactivity.', 'warning')
+            session.pop('user_id', None)  # Log the user out
+            return redirect(url_for('login'))
+
+        # Update last activity timestamp
+        self.update_last_activity()
+
+        # Normal dashboard logic
+        user_id = session['user_id']
+        return render_template('dashboard.html', user_id=user_id)
+
     def mycases(self):
-        # Grabs previously stored username and user_role variable
-        connection = self.dbconnectiontest()
+        # Check if the user is logged in
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+
+        # Check for inactivity
+        if self.is_session_timed_out():
+            flash('You have been logged out due to inactivity.', 'warning')
+            session.pop('user_id', None)  # Log the user out
+            return redirect(url_for('login'))
+
+        # Update last activity timestamp
+        self.update_last_activity()
         username = session.get("username", None)
         user_role = session.get("user_role", None)
-
+        connection = self.dbconnectiontest()
         if connection:
             cursor = connection.cursor(dictionary=True)
-            if 'user_id' in session:
-                user_id = session['user_id']
-                user_role = session['user_role']
-                # If the user role is admin they can see all cases #
-                if user_role == "admin":
-                    cursor.execute("SELECT *, STR_TO_DATE(casecreated, '%d.%m.%Y %H:%i') AS formatted_date FROM cases")
-                else:
-                    # If user role is not admin they can only see cases under their name #
-                    cursor.execute("SELECT *, STR_TO_DATE(casecreated, '%d.%m.%Y %H:%i') AS formatted_date FROM cases WHERE username = %s OR assigned_engineer = %s", (username, username))
-
+            if user_role == "admin":
+                cursor.execute("SELECT * FROM cases")
+            else:
+                cursor.execute("SELECT * FROM cases WHERE username = %s OR assigned_engineer = %s", (username, username))
             cases = cursor.fetchall()
             connection.close()
 
-            cases = sorted(cases, key=lambda x: x['formatted_date'] if x['formatted_date'] is not None else '', reverse=True)
+        return render_template('mycases.html', cases=cases)
 
-        # Connection timeout
-        if 'user_id' in session:
-            user_id = session['user_id']
-            return render_template('mycases.html', user_id=user_id, cases=cases)
-        else:
-            return redirect(url_for('login'))
-    
     ### Submitting comments logic ###
     def submit_comment(self, caseid):
         new_comment = request.form['new_comment'].strip()
         now = datetime.datetime.now()
         nowtime = now.strftime(f'%d.%m.%Y %H:%M')
 
+        # Sanitise user input to prevent XSS attacks
+        new_comment = bleach.clean(new_comment)
+
         # Data validation to not allow empty comments to be submitted
         if not new_comment:
             flash('Please enter a comment.', 'error')
             return redirect(url_for('cases', caseid=caseid))
+
         try:
             connection = self.dbconnectiontest()
             if connection:
@@ -228,7 +263,6 @@ class CaseNowApp:
                 # Adds new comment to previous comments to form total comments
                 if existing_comments:
                     updated_comments = f"{existing_comments}\n{nowtime} <{username}>: {new_comment}"
-
                 else:
                     updated_comments = f"{nowtime} <{username}>: {new_comment}"
 
@@ -337,9 +371,20 @@ class CaseNowApp:
             assigned_engineer = request.form['assigned-engineer']
             now = datetime.datetime.now()
             nowtime = now.strftime(f'%d.%m.%Y %H:%M')
-            connection = self.dbconnectiontest()
+
+            # Check for None or empty input (to prevent invalid values)
+            if not casetype or not casetitle or not casedesc or not assigned_engineer:
+                flash("All fields are required.", "error")
+                return redirect(url_for("create_case"))
+
+            # Sanitise inputs using Bleach to remove any potentially dangerous HTML tags
+            casetype = bleach.clean(casetype)  # Sanitise case type
+            casetitle = bleach.clean(casetitle)  # Sanitise case title
+            casedesc = bleach.clean(casedesc)  # Sanitise case description
+            assigned_engineer = bleach.clean(assigned_engineer)  # Sanitise assigned engineer input
 
             # Inserting case data into MySQL database
+            connection = self.dbconnectiontest()
             if connection:
                 cursor = connection.cursor()
                 try:
@@ -371,7 +416,12 @@ class CaseNowApp:
             connection.close()
 
             if case:
-                return render_template('cases.html', case=case)
+                # Ensure the user can only view their own cases, or is an admin/engineer
+                if case['username'] == session.get('username') or session.get('user_role') in ['admin', 'engineer']:
+                    return render_template('cases.html', case=case)
+                else:
+                    flash('You do not have permission to view this case.', 'error')
+                    return redirect(url_for('mycases'))
             else:
                 return "Error: Case not found"
         return "Error: Could not connect to db"
