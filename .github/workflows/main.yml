@@ -2,7 +2,8 @@ name: Deploying to render
 
 on:
   push:
-    branches: [main]
+    branches:
+    - master
 
 jobs:
   deploy:
