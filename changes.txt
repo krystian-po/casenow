@@ -5,6 +5,7 @@ v1.3
 + Modularised code.
 + Additional logging created for account creation, case creation, closing, deletion.
 + Added enhanced security features for improved password security, data sanitisation, session timeout and broken access control measures.
++ Created a pipeline through github actions.
 
 v1.2
 
